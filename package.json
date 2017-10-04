@@ -1,0 +1,19 @@
+{
+  "name": "project-interactive-wall",
+  "description": "",
+  "version": "0.0.13",
+  "private": true,
+  "dependencies": {
+    "express": "4.15.4",
+    "express-device": "0.4.2",
+    "socket.io": "2.0.3",
+    "web-push": "3.2.2"
+  },
+  "engines": {
+    "node": "6.11.2",
+    "npm": "3.10.10"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
