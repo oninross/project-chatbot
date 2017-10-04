@@ -1,13 +1,15 @@
 var express = require('express'),
     app = express(),
     http = require('http').Server(app),
-    io = require('socket.io')(http),
-    device = require('express-device'),
     ssl = require('express-ssl'),
-    router = express.Router();
+    router = express.Router(),
+    ssl = require('express-ssl'),
+    apiai = require('apiai'),
+    apiAI = apiai('2fbd7449c74748c49a3c94c42427de39'),
+    uuidv1 = require('uuid/v1'),
+    UUID = '';
 
 app.use(ssl());
-app.use(device.capture());
 
 app.use(function (req, res, next) {
     if (req.secure) {
@@ -23,39 +25,28 @@ app.use(router);
 app.use(express.static(__dirname + '/client'));
 
 router.get('/', function (req, res) {
-    console.log('\x1b[35m', req.device.type);
-
-    if (req.device.type == 'phone') {
-        res.redirect('/photo');
-        // res.sendFile(__dirname + '/client/photo/index.html');
-    } else {
-        res.sendFile(__dirname + '/client/index.html');
-    }
-
+    UUID = uuidv1();
+    res.sendFile(__dirname + '/client/index.html');
 });
 
-router.get('/photo', function (req, res) {
-    console.log('\x1b[35m', req.device.type);
-
-    if (req.device.type != 'phone') {
-        res.redirect('/');
-        // res.sendFile(__dirname + '/client/index.html');
-    } else {
-        res.sendFile(__dirname + '/client/photo/index.html');
-    }
-});
-
-io.on('connection', function (socket) {
-    console.log('\x1b[32m', 'a user connected');
-
-    socket.on('disconnect', function () {
-        console.log('\x1b[31m', 'user disconnected');
+app.post('/sendRequest', function (req, res) {
+    var request = apiAI.textRequest(req.body.query, {
+        sessionId: UUID
     });
 
-    socket.on('photo flick', function (data) {
-        io.emit('photo flick', data);
+    request.on('response', function(res) {
+        console.log(res);
     });
+
+    request.on('error', function(err) {
+        console.log(err);
+    });
+
+    request.end();
 });
+
+
+
 
 http.listen(process.env.PORT || 8888, function () {
     console.log('listening on *:8888');
