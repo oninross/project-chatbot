@@ -1,7 +1,7 @@
 'use strict';
 
-import { ripple } from '../../../_assets/interactive-wall/js/_material';
-import { debounce, isMobile, easeOutExpo } from '../../../_assets/interactive-wall/js/_helper';
+import { ripple } from '../../../_assets/chatbot/js/_material';
+import { debounce, isMobile, easeOutExpo } from '../../../_assets/chatbot/js/_helper';
 
 const $window = $(window),
     $body = $('body'),
