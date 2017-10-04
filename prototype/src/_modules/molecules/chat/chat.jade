@@ -1,0 +1,7 @@
+mixin chat(spec)
+    - spec = spec || {}
+    - spec.__class = spec.__class || ''
+
+    .chat
+        input.chat__box(type="input", placeholder="Placeholder")
+        button.chat__btn.js-send-query(type="button") Send

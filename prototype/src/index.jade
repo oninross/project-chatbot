@@ -1,4 +1,11 @@
+include ./_modules/organisms/conversation/conversation
+include ./_modules/molecules/chat/chat
+
 extends _layouts/base
 
 block content
     section.section
+        .container
+            +conversation()
+
+            +chat()

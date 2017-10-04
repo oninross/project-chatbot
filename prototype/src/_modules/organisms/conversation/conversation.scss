@@ -1,0 +1,33 @@
+// conversation styles
+.conversation {
+    height: calc(100% - 76px);
+    overflow-y: auto;
+    margin-bottom: 75px;
+    padding-top: 20px;
+
+    &__row {
+        @include clearfix;
+    }
+
+    &__msg {
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+        color: $white;
+        border-radius: 4px;
+        font-size: 1.4em;
+        line-height: normal;
+        max-width: 320px;
+        margin-bottom: 20px;
+        padding: 15px;
+
+        .-bot & {
+            float: left;
+            background-color: $white;
+            color: $black;
+        }
+
+        .-human & {
+            background-color: $matte-black;
+            float: right;
+        }
+    }
+}

@@ -16,8 +16,12 @@ import './_modernizr';
 import { debounce, isMobile } from './_helper';
 import { toaster } from './_material';
 
+import Conversation from '../../../_modules/organisms/conversation/conversation';
 
 $(() => {
+    new Conversation();
+
+
     ////////////////////////////
     // Set framerate to 60fps //
     ////////////////////////////
