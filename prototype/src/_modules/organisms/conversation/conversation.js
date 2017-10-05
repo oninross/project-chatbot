@@ -41,7 +41,6 @@ export default class Conversation {
                     message: obj.message
                 }),
                 success: function (data) {
-                    console.log(data);
                     $sendQuery.attr('disabled', false);
 
                     obj.message = data.message;
