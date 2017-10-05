@@ -13,7 +13,7 @@
         border-bottom: 2px solid $black;
         font-size: 1.6em;
         font-weight: $light;
-        padding: 8px;
+        padding: 8px 0;
         padding-right: 80px;
         width: 100%;
 
@@ -26,7 +26,7 @@
     &__btn {
         @extend .cta;
 
-        border-radius: 0;
+        background-color: $matte-black;
         font-weight: $bold;
         padding: 8px 20px;
         position: absolute;

@@ -1,27 +1,15 @@
 var express = require('express'),
     app = express(),
     http = require('http').Server(app),
-    ssl = require('express-ssl'),
+    bodyParser = require('body-parser'),
     router = express.Router(),
-    ssl = require('express-ssl'),
     apiai = require('apiai'),
     apiAI = apiai('2fbd7449c74748c49a3c94c42427de39'),
     uuidv1 = require('uuid/v1'),
     UUID = '';
 
-app.use(ssl());
-
-app.use(function (req, res, next) {
-    if (req.secure) {
-        // request was via https, so do no special handling
-        next();
-    } else {
-        // request was via http, so redirect to https
-        res.redirect('https://' + req.headers.host + req.url);
-    }
-});
-
 app.use(router);
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/client'));
 
 router.get('/', function (req, res) {
@@ -30,16 +18,21 @@ router.get('/', function (req, res) {
 });
 
 app.post('/sendRequest', function (req, res) {
-    var request = apiAI.textRequest(req.body.query, {
+    var response = res,
+        request = apiAI.textRequest(req.body.message, {
         sessionId: UUID
     });
 
     request.on('response', function(res) {
-        console.log(res);
+        console.log("\x1b[32m", 'RESPONSE');
+        console.log("\x1b[37m", JSON.stringify(res.result.fulfillment.messages[0].speech));
+
+        response.json({ message: res.result.fulfillment.messages[0].speech });
     });
 
     request.on('error', function(err) {
-        console.log(err);
+        console.log("\x1b[31m", 'ERROR');
+        console.log("\x1b[37m", JSON.stringify(err));
     });
 
     request.end();

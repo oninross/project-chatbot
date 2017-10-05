@@ -7,17 +7,26 @@
 
     &__row {
         @include clearfix;
+
+        opacity: 0;
+        transform: translateY(75px);
     }
 
     &__msg {
         box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
         color: $white;
         border-radius: 4px;
-        font-size: 1.4em;
-        line-height: normal;
+        font-size: 1.6em;
+        font-weight: $light;
+        line-height: 1.25;
         max-width: 320px;
         margin-bottom: 20px;
         padding: 15px;
+
+        a {
+            font-weight: $bold;
+            font-size: 1em;
+        }
 
         .-bot & {
             float: left;

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interactive Wall</title>
+    <title>Nathan</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
     <link rel="manifest" href="/manifest.json">
@@ -53,6 +53,16 @@
             <path d="M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z"></path>
           </svg>
         </button>
+      </div>
+    </script>
+    <script id="msg__bot-template" type="text/template">
+      <div class="conversation__row -bot -hide">
+        <div class="conversation__msg">{{= it.message }}</div>
+      </div>
+    </script>
+    <script id="msg__human-template" type="text/template">
+      <div class="conversation__row -human -hide">
+        <div class="conversation__msg">{{= it.message }}</div>
       </div>
     </script>
   </body>
