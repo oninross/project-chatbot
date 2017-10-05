@@ -65,7 +65,7 @@ export default class Conversation {
 
                     that.enterChatBubble();
 
-                    msgStr = $convoWrap.find('.conversation__row:last-child').text();
+                    msgStr = $convoWrap.find('.conversation__row:last-child .conversation__msg').text();
 
                     that.speak('en-US', 'Google US English', msgStr);
                 },
