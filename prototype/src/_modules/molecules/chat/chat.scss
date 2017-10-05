@@ -2,8 +2,11 @@
 .chat {
     bottom: 10px;
     left: 0;
-    padding: 0 20px;
-    position: absolute;
+    margin: auto;
+    max-width: 768px;
+    padding: 0 $gutter;
+    position: fixed;
+    right: 0;
     width: 100%;
 
     &__box {
@@ -14,8 +17,8 @@
         border-bottom: 2px solid $black;
         font-size: 1.6em;
         font-weight: $light;
-        padding: 8px 0;
-        padding-right: 90px;
+        padding: 10px 0;
+        padding-right: 80px;
         width: 100%;
 
         &:focus {
@@ -24,20 +27,58 @@
         }
     }
 
+    &-btn-wrapper {
+        @include clearfix;
+
+        height: 40px;
+        position: absolute;
+        right: 20px;
+        top: 0;
+        width: 80px;
+    }
+
     &__btn {
         @extend .cta;
+        @include transition((color, opacity), $animTime, $easeOutExpo);
 
         background-color: transparent;
         border-radius: 0;
         color: $matte-black;
         font-weight: $bold;
+        float: left;
+        height: 40px;
+        opacity: 1;
         padding: 8px 0;
-        position: absolute;
-        right: 20px;
-        top: 0;
+        width: 40px;
+
+        &:before {
+            @extend %icomoon;
+
+            font-size: 22px;
+        }
 
         &:hover {
             background-color: transparent;
+        }
+
+        &:disabled {
+            opacity: 0.25;
+        }
+
+        &.-mic {
+            &.-active {
+                color: $red;
+            }
+
+            &:before {
+                content: "\e903";
+            }
+        }
+
+        &.-send {
+            &:before {
+                content: "\e904";
+            }
         }
     }
 }

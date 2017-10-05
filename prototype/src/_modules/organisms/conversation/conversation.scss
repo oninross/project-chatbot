@@ -1,7 +1,7 @@
 // conversation styles
 .conversation {
-    height: calc(100% - 50px);
-    margin-bottom: 50px;
+    height: 100%;
+    padding-bottom: 50px;
     padding-top: 20px;
 
     &__wrap {
@@ -11,16 +11,23 @@
     &__row {
         @include clearfix;
 
-        opacity: 0;
-        transform: translateY(75px);
-
         // &.-bot {
-        //     transform: translateX(75px);
+        //     transform-origin: left top;
         // }
 
         // &.-human {
-        //     transform: translateX(-75px);
+        //     transform-origin: right top;
         // }
+    }
+
+    &__avatar {
+        background: url(../images/favicon/favicon-96x96.png) no-repeat center;
+        background-size: cover;
+        border-radius: 4px;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+        float: left;
+        height: 30px;
+        width: 30px;
     }
 
     &__msg {
@@ -32,7 +39,9 @@
         line-height: 1.25;
         max-width: 320px;
         margin-bottom: 20px;
+        opacity: 0;
         padding: 15px;
+        transform: scale(0.25);
 
         a {
             font-weight: $bold;
@@ -43,11 +52,19 @@
             float: left;
             background-color: $white;
             color: $black;
+            margin-left: 15px;
+            max-width: 215px;
+            transform-origin: left top;
+
+            @media screen and (min-width: 321px) {
+                max-width: 280px;
+            }
         }
 
         .-human & {
             background-color: $matte-black;
             float: right;
+            transform-origin: right top;
         }
     }
 

@@ -6,8 +6,6 @@ Global
 *,
 *:before,
 *:after {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -25,7 +23,7 @@ body {
     margin: 0 !important;
 
     @include tablet {
-        font-family: 'HelveticaNeue';
+        font-family: 'Open Sans', sans-serif;
     }
 }
 

@@ -7,14 +7,15 @@ export default class Conversation {
     constructor() {
         const that = this,
             $chatBox = $('.chat__box'),
-            $sendQuery = $('.js-send-query'),
-            $convo = $('.conversation'),
-            $convoWrap = $('.conversation__wrap'),
-            botTmp = doT.template($('#msg__bot-template').html()),
-            humanTmp = doT.template($('#msg__human-template').html());
+            $convo = $('.conversation');
 
-        var obj = {},
-            msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more about him< or contact him?';
+        that.audio = new Audio('/assets/chatbot/media/pop.mp3');
+        that.botTmp = doT.template($('#msg__bot-template').html());
+        that.humanTmp = doT.template($('#msg__human-template').html());
+        that.$jsSendQuery = $('.js-send-query');
+        that.$convoWrap = $('.conversation__wrap');
+        that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more about him or contact him?';
+        that.obj = {};
 
         $convo.mCustomScrollbar({
             setTop: 0,
@@ -22,58 +23,35 @@ export default class Conversation {
             scrollbarPosition: 'outside'
         });
 
-        obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more <a class="js-click-msg" href="#">about him</a> or <a class="js-click-msg" href="#">contact him</a>?';
-        $convoWrap.append(botTmp(obj));
+        that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant.<br/><br/>Would you like to get to know more <a class="js-click-msg" href="#">about him</a> or <a class="js-click-msg" href="#">contact</a> him?';
+        that.$convoWrap.append(that.botTmp(that.obj));
 
         that.enterChatBubble();
 
-        that.speak('en-US', 'Google US English', msgStr);
+        that.speak('en-US', 'Google US English', that.msgStr);
 
         $chatBox.on('keypress', function (e) {
             if (e.keyCode == 13) {
-                $sendQuery.click();
+                that.$jsSendQuery.click();
             }
         });
 
-        $sendQuery.on('click', function (e) {
+        that.$jsSendQuery.on('click', function (e) {
             e.preventDefault();
 
             if ($chatBox.val() == '') {
                 return false;
             }
 
-            obj.message = $chatBox.val();
-            $convoWrap.append(humanTmp(obj));
+            that.obj.message = $chatBox.val();
+            that.$convoWrap.append(that.humanTmp(that.obj));
 
             that.enterChatBubble();
 
             $chatBox.val('');
-            $sendQuery.attr('disabled', true);
+            that.$jsSendQuery.attr('disabled', true);
 
-            $.ajax({
-                url: '/sendRequest',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    message: obj.message
-                }),
-                success: function (data) {
-                    $sendQuery.attr('disabled', false);
-
-                    obj.message = data.message;
-                    $convoWrap.append(botTmp(obj));
-
-                    that.enterChatBubble();
-
-                    msgStr = $convoWrap.find('.conversation__row:last-child').text();
-
-                    that.speak('en-US', 'Google US English', msgStr);
-                },
-                error: function (error) {
-                    console.log(error);
-                    $sendQuery.attr('disabled', false);
-                }
-            });
+            that.sendQuery(that.obj.message);
         });
 
         $('body').on('click', '.js-click-msg', function (e) {
@@ -82,16 +60,87 @@ export default class Conversation {
             $chatBox.val($(this).text());
             $sendQuery.trigger('click');
         });
+
+        if ('webkitSpeechRecognition' in window) {
+            const $jsTalk = $('.js-talk');
+
+            $jsTalk.attr('disabled', false).on('click', function () {
+                recognition.start();
+            });
+
+            let recognition = new webkitSpeechRecognition();
+
+            recognition.onstart = function () {
+                $jsTalk.addClass('-active');
+            }
+
+            recognition.onresult = function (e) {
+                that.obj.message = e.results["0"]["0"].transcript;
+
+                that.sendQuery(that.obj.message);
+                that.$convoWrap.append(that.humanTmp(that.obj));
+
+                that.enterChatBubble();
+                $jsTalk.removeClass('-active');
+            }
+
+            recognition.onerror = function (event) {
+                $jsTalk.removeClass('-active');
+
+                that.obj.message = 'Sorry, I could\'t understand that. Can you say it a little bit slower please?';
+                that.$convoWrap.append(that.botTmp(that.obj));
+
+                that.enterChatBubble();
+            }
+
+            recognition.onend = function () {
+                $jsTalk.removeClass('-active');
+            }
+        }
+    }
+
+    sendQuery(msg) {
+        const that = this;
+
+        $.ajax({
+            url: '/sendRequest',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                message: msg
+            }),
+            success: function (data) {
+                that.$jsSendQuery.attr('disabled', false);
+
+                that.obj.message = data.message;
+                that.$convoWrap.append(that.botTmp(that.obj));
+
+                that.enterChatBubble();
+
+                that.msgStr = that.$convoWrap.find('.conversation__row:last-child .conversation__msg').text();
+
+                that.speak('en-US', 'Google US English', that.msgStr);
+            },
+            error: function (error) {
+                console.log(error);
+                that.$jsSendQuery.attr('disabled', false);
+            }
+        });
     }
 
     enterChatBubble() {
+        var that = this;
+
         $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
 
-        TweenLite.to($('.conversation__row'), 0.5, {
+        TweenLite.to($('.conversation__msg'), 0.2, {
             opacity: 1,
-            y: 0,
-            ease: Expo.easeOut,
-            delay: 0.75
+            scale: 1,
+            ease: Back.easeOut,
+            delay: 0.75,
+            onStart: function () {
+                that.audio.play();
+            }
         });
     }
 
@@ -113,8 +162,6 @@ export default class Conversation {
         // Set the language
         msg.lang = newLang;
 
-        // console.log(lang)
-        // console.log(voice)
 
         // If a voice has been selected, find the voice and set the
         // utterance instance's voice attribute.

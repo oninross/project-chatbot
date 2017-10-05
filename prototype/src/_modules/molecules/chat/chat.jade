@@ -4,4 +4,10 @@ mixin chat(spec)
 
     .chat
         input.chat__box(type="input", placeholder="")
-        button.chat__btn.js-send-query(type="button") Send
+
+        .chat-btn-wrapper
+            button.chat__btn.-mic.js-talk(type="button", disabled="")
+                .sr-only Talk
+
+            button.chat__btn.-send.js-send-query(type="button")
+                .sr-only Send

@@ -1,6 +1,6 @@
 {
   "name": "chatbot",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "dependencies": {
     "browserify-shim": "^3.8.12",
     "croppie": "^2.5.0",
@@ -108,6 +108,7 @@
       "css": "_assets/chatbot/css",
       "fonts": "_assets/chatbot/css/fonts",
       "js": "_assets/chatbot/js",
+      "media": "_assets/chatbot/media",
       "data": "_data"
     },
     "entries": {

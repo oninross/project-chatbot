@@ -19,7 +19,7 @@ Layout
 }
 
 .offline {
-    color: $white;
+    color: $matte-black;
     height: calc(100vh - 91px);
     text-align: center;
 
@@ -28,6 +28,7 @@ Layout
     }
 
     svg {
+        fill: $matte-black;
         width: 100px;
     }
 
