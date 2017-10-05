@@ -1,7 +1,7 @@
 // conversation styles
 .conversation {
-    height: calc(100% - 76px);
-    margin-bottom: 75px;
+    height: calc(100% - 50px);
+    margin-bottom: 50px;
     padding-top: 20px;
 
     &__wrap {
@@ -51,7 +51,8 @@
         }
     }
 
-    .mCSB_container {
-        height: 100%;
+    .mCSB_outside+.mCS-minimal-dark.mCSB_scrollTools_vertical,
+    .mCSB_outside+.mCS-minimal.mCSB_scrollTools_vertical {
+        right: -20px;
     }
 }

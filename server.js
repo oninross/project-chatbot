@@ -25,14 +25,14 @@ app.post('/sendRequest', function (req, res) {
 
     request.on('response', function(res) {
         console.log("\x1b[32m", 'RESPONSE');
-        console.log("\x1b[37m", JSON.stringify(res.result.fulfillment.messages[0].speech));
+        // console.log("\x1b[37m", JSON.stringify(res.result.fulfillment.messages[0].speech));
 
         response.json({ message: res.result.fulfillment.messages[0].speech });
     });
 
     request.on('error', function(err) {
         console.log("\x1b[31m", 'ERROR');
-        console.log("\x1b[37m", JSON.stringify(err));
+        // console.log("\x1b[37m", JSON.stringify(err));
     });
 
     request.end();
