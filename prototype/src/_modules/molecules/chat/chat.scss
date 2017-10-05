@@ -1,0 +1,43 @@
+// chat styles
+.chat {
+    bottom: 10px;
+    left: 0;
+    padding: 0 20px;
+    position: absolute;
+    width: 100%;
+
+    &__box {
+        @include transition(border-bottom, $animTime, $easeOutExpo);
+
+        background-color: transparent;
+        border: 0;
+        border-bottom: 2px solid $black;
+        font-size: 1.6em;
+        font-weight: $light;
+        padding: 8px 0;
+        padding-right: 90px;
+        width: 100%;
+
+        &:focus {
+            border-bottom-color: $blue;
+            outline: 0;
+        }
+    }
+
+    &__btn {
+        @extend .cta;
+
+        background-color: transparent;
+        border-radius: 0;
+        color: $matte-black;
+        font-weight: $bold;
+        padding: 8px 0;
+        position: absolute;
+        right: 20px;
+        top: 0;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}

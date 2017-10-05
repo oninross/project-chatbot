@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interactive Wall</title>
+    <title>Nathan</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
     <link rel="manifest" href="/manifest.json">
@@ -12,20 +12,20 @@
     <meta name="msapplication-TileColor" content="#111111">
     <meta name="msapplication-TileImage" content="images/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#111111">
-    <link rel="apple-touch-icon" sizes="57x57" href="/assets/interactive-wall/images/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/assets/interactive-wall/images/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/assets/interactive-wall/images/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/interactive-wall/images/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/assets/interactive-wall/images/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/assets/interactive-wall/images/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/assets/interactive-wall/images/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/assets/interactive-wall/images/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/interactive-wall/images/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/interactive-wall/images/favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/interactive-wall/images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/assets/interactive-wall/images/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/interactive-wall/images/favicon/favicon-16x16.png">
-    <link rel="stylesheet" href="/assets/interactive-wall/css/main.css">
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/chatbot/images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/chatbot/images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/chatbot/images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/chatbot/images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/chatbot/images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/chatbot/images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/chatbot/images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/chatbot/images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/chatbot/images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/chatbot/images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/chatbot/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/chatbot/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/chatbot/images/favicon/favicon-16x16.png">
+    <link rel="stylesheet" href="/assets/chatbot/css/main.css">
   </head>
   <body>
     <main id="main">
@@ -44,7 +44,7 @@
       </section>
     </main>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <script src="/assets/interactive-wall/js/main.js"></script>
+    <script src="/assets/chatbot/js/main.js"></script>
     <script id="toaster-template" type="text/template">
       <div class="toaster__card toaster{{= it.ind }}">
         <p>{{! it.message}}</p>
@@ -53,6 +53,16 @@
             <path d="M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z"></path>
           </svg>
         </button>
+      </div>
+    </script>
+    <script id="msg__bot-template" type="text/template">
+      <div class="conversation__row -bot">
+        <div class="conversation__msg">{{= it.message }}</div>
+      </div>
+    </script>
+    <script id="msg__human-template" type="text/template">
+      <div class="conversation__row -human">
+        <div class="conversation__msg">{{= it.message }}</div>
       </div>
     </script>
   </body>

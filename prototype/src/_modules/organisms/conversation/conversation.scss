@@ -1,0 +1,58 @@
+// conversation styles
+.conversation {
+    height: calc(100% - 50px);
+    margin-bottom: 50px;
+    padding-top: 20px;
+
+    &__wrap {
+        height: inherit;
+    }
+
+    &__row {
+        @include clearfix;
+
+        opacity: 0;
+        transform: translateY(75px);
+
+        // &.-bot {
+        //     transform: translateX(75px);
+        // }
+
+        // &.-human {
+        //     transform: translateX(-75px);
+        // }
+    }
+
+    &__msg {
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+        color: $white;
+        border-radius: 4px;
+        font-size: 1.6em;
+        font-weight: $light;
+        line-height: 1.25;
+        max-width: 320px;
+        margin-bottom: 20px;
+        padding: 15px;
+
+        a {
+            font-weight: $bold;
+            font-size: 1em;
+        }
+
+        .-bot & {
+            float: left;
+            background-color: $white;
+            color: $black;
+        }
+
+        .-human & {
+            background-color: $matte-black;
+            float: right;
+        }
+    }
+
+    .mCSB_outside+.mCS-minimal-dark.mCSB_scrollTools_vertical,
+    .mCSB_outside+.mCS-minimal.mCSB_scrollTools_vertical {
+        right: -20px;
+    }
+}

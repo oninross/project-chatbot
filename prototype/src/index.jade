@@ -1,8 +1,11 @@
+include ./_modules/organisms/conversation/conversation
+include ./_modules/molecules/chat/chat
+
 extends _layouts/base
 
 block content
-    section.section.photowall
-        .photowall__wrapper
+    section.section
+        .container
+            +conversation()
 
-        ul
-            li.photowall__sample
+            +chat()

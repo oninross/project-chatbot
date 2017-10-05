@@ -1,6 +1,6 @@
 'use strict';
 
-import { debounce, isMobile } from '../../../_assets/interactive-wall/js/_helper';
+import { debounce, isMobile } from '../../../_assets/chatbot/js/_helper';
 
 const $header = $('header');
 

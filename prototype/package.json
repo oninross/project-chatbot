@@ -1,5 +1,5 @@
 {
-  "name": "interactive-wall",
+  "name": "chatbot",
   "version": "0.0.13",
   "dependencies": {
     "browserify-shim": "^3.8.12",
@@ -104,10 +104,10 @@
       "//": "Directories relative to `source` directory",
       "modules": "_modules",
       "layouts": "_layouts",
-      "images": "_assets/interactive-wall/images",
-      "css": "_assets/interactive-wall/css",
-      "fonts": "_assets/interactive-wall/css/fonts",
-      "js": "_assets/interactive-wall/js",
+      "images": "_assets/chatbot/images",
+      "css": "_assets/chatbot/css",
+      "fonts": "_assets/chatbot/css/fonts",
+      "js": "_assets/chatbot/js",
       "data": "_data"
     },
     "entries": {

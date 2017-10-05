@@ -8,7 +8,7 @@ export default function(gulp, plugins, args, config, taskTarget, browserSync) {
 
   // Copy fonts
   gulp.task('copyFonts', function() {
-    gulp.src(path.join(dirs.source, '_assets/interactive-wall/css/fonts/**/*.*'))
+    gulp.src(path.join(dirs.source, '_assets/chatbot/css/fonts/**/*.*'))
       .pipe(gulp.dest(dest))
 });
 }

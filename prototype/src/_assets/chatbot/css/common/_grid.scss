@@ -55,7 +55,7 @@
 
     height: 100%;
     margin: auto;
-    max-width: 960px;
+    max-width: 768px;
     padding: 0 $gutter;
     position: relative;
     width: 100%;
@@ -63,10 +63,6 @@
 
     @include desktop {
         padding: 0 $gutterTablet;
-    }
-
-    @include large-desktop {
-        max-width: 1160px;
     }
 
     .wrap {

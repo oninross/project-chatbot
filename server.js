@@ -1,61 +1,45 @@
 var express = require('express'),
     app = express(),
     http = require('http').Server(app),
-    io = require('socket.io')(http),
-    device = require('express-device'),
-    ssl = require('express-ssl'),
-    router = express.Router();
-
-app.use(ssl());
-app.use(device.capture());
-
-app.use(function (req, res, next) {
-    if (req.secure) {
-        // request was via https, so do no special handling
-        next();
-    } else {
-        // request was via http, so redirect to https
-        res.redirect('https://' + req.headers.host + req.url);
-    }
-});
+    bodyParser = require('body-parser'),
+    router = express.Router(),
+    apiai = require('apiai'),
+    apiAI = apiai('2fbd7449c74748c49a3c94c42427de39'),
+    uuidv1 = require('uuid/v1'),
+    UUID = '';
 
 app.use(router);
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/client'));
 
 router.get('/', function (req, res) {
-    console.log('\x1b[35m', req.device.type);
-
-    if (req.device.type == 'phone') {
-        res.redirect('/photo');
-        // res.sendFile(__dirname + '/client/photo/index.html');
-    } else {
-        res.sendFile(__dirname + '/client/index.html');
-    }
-
+    UUID = uuidv1();
+    res.sendFile(__dirname + '/client/index.html');
 });
 
-router.get('/photo', function (req, res) {
-    console.log('\x1b[35m', req.device.type);
-
-    if (req.device.type != 'phone') {
-        res.redirect('/');
-        // res.sendFile(__dirname + '/client/index.html');
-    } else {
-        res.sendFile(__dirname + '/client/photo/index.html');
-    }
-});
-
-io.on('connection', function (socket) {
-    console.log('\x1b[32m', 'a user connected');
-
-    socket.on('disconnect', function () {
-        console.log('\x1b[31m', 'user disconnected');
+app.post('/sendRequest', function (req, res) {
+    var response = res,
+        request = apiAI.textRequest(req.body.message, {
+        sessionId: UUID
     });
 
-    socket.on('photo flick', function (data) {
-        io.emit('photo flick', data);
+    request.on('response', function(res) {
+        console.log("\x1b[32m", 'RESPONSE');
+        // console.log("\x1b[37m", JSON.stringify(res.result.fulfillment.messages[0].speech));
+
+        response.json({ message: res.result.fulfillment.messages[0].speech });
     });
+
+    request.on('error', function(err) {
+        console.log("\x1b[31m", 'ERROR');
+        // console.log("\x1b[37m", JSON.stringify(err));
+    });
+
+    request.end();
 });
+
+
+
 
 http.listen(process.env.PORT || 8888, function () {
     console.log('listening on *:8888');
