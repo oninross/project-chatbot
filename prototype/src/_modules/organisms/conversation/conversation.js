@@ -7,7 +7,7 @@ export default class Conversation {
     constructor() {
         const that = this,
             $chatBox = $('.chat__box'),
-            $sendQuery = $('.js-send-query'),
+            $jsSendQuery = $('.js-send-query'),
             $convo = $('.conversation'),
             $convoWrap = $('.conversation__wrap'),
             botTmp = doT.template($('#msg__bot-template').html()),
@@ -31,11 +31,11 @@ export default class Conversation {
 
         $chatBox.on('keypress', function (e) {
             if (e.keyCode == 13) {
-                $sendQuery.click();
+                $jsSendQuery.click();
             }
         });
 
-        $sendQuery.on('click', function (e) {
+        $jsSendQuery.on('click', function (e) {
             e.preventDefault();
 
             if ($chatBox.val() == '') {
@@ -48,7 +48,7 @@ export default class Conversation {
             that.enterChatBubble();
 
             $chatBox.val('');
-            $sendQuery.attr('disabled', true);
+            $jsSendQuery.attr('disabled', true);
 
             $.ajax({
                 url: '/sendRequest',
@@ -58,7 +58,7 @@ export default class Conversation {
                     message: obj.message
                 }),
                 success: function (data) {
-                    $sendQuery.attr('disabled', false);
+                    $jsSendQuery.attr('disabled', false);
 
                     obj.message = data.message;
                     $convoWrap.append(botTmp(obj));
@@ -82,6 +82,12 @@ export default class Conversation {
             $chatBox.val($(this).text());
             $sendQuery.trigger('click');
         });
+
+        if ('webkitSpeechRecognition' in window) {
+            const $jsTalk = $('.js-talk');
+
+            $jsTalk.attr('disabled', false);
+        }
     }
 
     enterChatBubble() {
