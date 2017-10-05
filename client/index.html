@@ -36,7 +36,14 @@
           </div>
           <div class="chat">
             <input type="input" placeholder="" class="chat__box">
-            <button type="button" class="chat__btn js-send-query">Send</button>
+            <div class="chat-btn-wrapper">
+              <button type="button" disabled class="chat__btn -mic js-talk">
+                <div class="sr-only">Talk</div>
+              </button>
+              <button type="button" class="chat__btn -send js-send-query">
+                <div class="sr-only">Send</div>
+              </button>
+            </div>
           </div>
         </div>
       </section>
