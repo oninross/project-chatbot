@@ -108,6 +108,7 @@
       "css": "_assets/chatbot/css",
       "fonts": "_assets/chatbot/css/fonts",
       "js": "_assets/chatbot/js",
+      "media": "_assets/chatbot/media",
       "data": "_data"
     },
     "entries": {

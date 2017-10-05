@@ -61,6 +61,7 @@ html.no-js(lang='en')
 
             script(id='msg__bot-template', type='text/template')
                 .conversation__row.-bot
+                    .conversation__avatar
                     .conversation__msg {{= it.message }}
 
             script(id='msg__human-template', type='text/template')

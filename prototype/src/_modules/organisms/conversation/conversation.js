@@ -9,6 +9,7 @@ export default class Conversation {
             $chatBox = $('.chat__box'),
             $convo = $('.conversation');
 
+        that.audio = new Audio('/assets/chatbot/media/pop.mp3');
         that.botTmp = doT.template($('#msg__bot-template').html());
         that.humanTmp = doT.template($('#msg__human-template').html());
         that.$jsSendQuery = $('.js-send-query');
@@ -128,13 +129,18 @@ export default class Conversation {
     }
 
     enterChatBubble() {
+        var that = this;
+
         $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
 
-        TweenLite.to($('.conversation__row'), 0.5, {
+        TweenLite.to($('.conversation__msg'), 0.2, {
             opacity: 1,
-            y: 0,
-            ease: Expo.easeOut,
-            delay: 0.75
+            scale: 1,
+            ease: Back.easeOut,
+            delay: 0.75,
+            onStart: function () {
+                that.audio.play();
+            }
         });
     }
 
@@ -156,8 +162,6 @@ export default class Conversation {
         // Set the language
         msg.lang = newLang;
 
-        // console.log(lang)
-        // console.log(voice)
 
         // If a voice has been selected, find the voice and set the
         // utterance instance's voice attribute.
