@@ -1,6 +1,6 @@
 {
   "name": "chatbot",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "dependencies": {
     "browserify-shim": "^3.8.12",
     "croppie": "^2.5.0",
