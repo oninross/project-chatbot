@@ -1,20 +1,33 @@
 'use strict';
 
+import mCustomScrollbar from 'mCustomScrollbar';
+import { iOS } from '../../../_assets/chatbot/js/_helper';
+
 export default class Conversation {
     constructor() {
         const that = this,
             $chatBox = $('.chat__box'),
             $sendQuery = $('.js-send-query'),
             $convo = $('.conversation'),
+            $convoWrap = $('.conversation__wrap'),
             botTmp = doT.template($('#msg__bot-template').html()),
             humanTmp = doT.template($('#msg__human-template').html());
 
-        var obj = {};
+        var obj = {},
+            msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more about him< or contact him?';
 
-        obj.message = 'Hello! My name is Nino and I\'m a UX developer in Canberra, Australia.  Would you like to know more <a class="js-click-msg" href="#about">about me</a> or my <a class="js-click-msg" href="#skills">skills</a>?';
-        $convo.append(botTmp(obj));
+        $convo.mCustomScrollbar({
+            setTop: 0,
+            theme: 'minimal-dark',
+            scrollbarPosition: 'outside'
+        });
+
+        obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more <a class="js-click-msg" href="#">about him</a> or <a class="js-click-msg" href="#">contact him</a>?';
+        $convoWrap.append(botTmp(obj));
 
         that.enterChatBubble();
+
+        that.speak('en-US', 'Google US English', msgStr);
 
         $chatBox.on('keypress', function (e) {
             if (e.keyCode == 13) {
@@ -25,8 +38,12 @@ export default class Conversation {
         $sendQuery.on('click', function (e) {
             e.preventDefault();
 
+            if ($chatBox.val() == '') {
+                return false;
+            }
+
             obj.message = $chatBox.val();
-            $convo.append(humanTmp(obj));
+            $convoWrap.append(humanTmp(obj));
 
             that.enterChatBubble();
 
@@ -44,9 +61,13 @@ export default class Conversation {
                     $sendQuery.attr('disabled', false);
 
                     obj.message = data.message;
-                    $convo.append(botTmp(obj));
+                    $convoWrap.append(botTmp(obj));
 
                     that.enterChatBubble();
+
+                    msgStr = $convoWrap.find('.conversation__row:last-child').text();
+
+                    that.speak('en-US', 'Google US English', msgStr);
                 },
                 error: function (error) {
                     console.log(error);
@@ -64,14 +85,81 @@ export default class Conversation {
     }
 
     enterChatBubble() {
-        TweenLite.to($('.conversation .-hide'), 0.5, {
+        $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
+
+        TweenLite.to($('.conversation__row'), 0.5, {
             opacity: 1,
             y: 0,
             ease: Expo.easeOut,
-            delay: 0.2,
-            onComplete: function () {
-                $(this).removeClass('-hide');
-            }
+            delay: 0.75
         });
     }
+
+    speak(newLang, newVoice, string) {
+        var that = this;
+
+        that.canITalk();
+
+        // Create a new instance of SpeechSynthesisUtterance.
+        var msg = new SpeechSynthesisUtterance();
+
+        // Set the text.
+        msg.text = string;
+
+        msg.volume = 1; // 0 to 1
+        msg.rate = 1; // 0.1 to 10
+        msg.pitch = 1; //0 to 2
+
+        // Set the language
+        msg.lang = newLang;
+
+        // console.log(lang)
+        // console.log(voice)
+
+        // If a voice has been selected, find the voice and set the
+        // utterance instance's voice attribute.
+        msg.voice = speechSynthesis.getVoices().filter(function (voice) {
+            return voice.name == newVoice;
+            // native
+            // Google Deutsch
+            // Google US English
+            // Google UK English Female
+            // Google UK English Male
+            // Google español
+            // Google español de Estados Unidos
+            // Google français
+            // Google हिन्दी
+            // Google Bahasa Indonesia
+            // Google italiano
+            // Google 日本語
+            // Google 한국의
+            // Google Nederlands
+            // Google polski
+            // Google português do Brasil
+            // Google русский
+            // Google 普通话（中国大陆）
+            // Google 粤語（香港）
+            // Google 國語（臺灣）
+        })[0];
+
+
+        window.speechSynthesis.speak(msg);
+
+        // msg.onend = function(e) {
+        //     console.log('Finished in ' + event.elapsedTime + ' seconds.');
+        // };
+    }
+
+    canITalk() {
+        if (iOS()) {
+            return false;
+        }
+
+        var SpeechSynthesisUtterance = window.webkitSpeechSynthesisUtterance || window.mozSpeechSynthesisUtterance || window.msSpeechSynthesisUtterance || window.oSpeechSynthesisUtterance || window.SpeechSynthesisUtterance;
+
+        if (SpeechSynthesisUtterance === undefined) {
+            return false;
+        }
+    }
 }
+

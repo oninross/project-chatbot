@@ -1,15 +1,26 @@
 // conversation styles
 .conversation {
     height: calc(100% - 76px);
-    overflow-y: auto;
     margin-bottom: 75px;
     padding-top: 20px;
+
+    &__wrap {
+        height: inherit;
+    }
 
     &__row {
         @include clearfix;
 
         opacity: 0;
         transform: translateY(75px);
+
+        // &.-bot {
+        //     transform: translateX(75px);
+        // }
+
+        // &.-human {
+        //     transform: translateX(-75px);
+        // }
     }
 
     &__msg {
@@ -38,5 +49,9 @@
             background-color: $matte-black;
             float: right;
         }
+    }
+
+    .mCSB_container {
+        height: 100%;
     }
 }
