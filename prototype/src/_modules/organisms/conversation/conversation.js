@@ -58,7 +58,7 @@ export default class Conversation {
             e.preventDefault();
 
             $chatBox.val($(this).text());
-            $sendQuery.trigger('click');
+            that.$sendQuery.trigger('click');
         });
 
         if ('webkitSpeechRecognition' in window) {
