@@ -48,6 +48,10 @@
             font-size: 1em;
         }
 
+        img {
+            margin-bottom: 0;
+        }
+
         .-bot & {
             float: left;
             background-color: $white;
