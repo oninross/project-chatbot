@@ -139,7 +139,6 @@ export default class Conversation {
             opacity: 1,
             scale: 1,
             ease: Back.easeOut,
-            delay: 0.75,
             onStart: function () {
                 that.audio.play();
             }
