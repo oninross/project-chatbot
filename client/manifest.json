@@ -1,9 +1,9 @@
 {
     "lang": "en",
-    "name": "Interactive Wall",
-    "short_name": "Interactive Wall",
+    "name": "nathan a.i.",
+    "short_name": "nathan a.i.",
     "description": "",
-    "start_url": "./photo/index.html",
+    "start_url": "./index.html",
     "display": "standalone",
     "orientation": "portrait",
     "background_color": "#383838",
