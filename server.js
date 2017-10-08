@@ -6,7 +6,23 @@ var express = require('express'),
     apiai = require('apiai'),
     apiAI = apiai('2fbd7449c74748c49a3c94c42427de39'),
     uuidv1 = require('uuid/v1'),
-    UUID = '';
+    isAskingName = true;
+    UUID = '',
+    givenName = '';
+
+// Initialise Firebase
+var firebase = require('firebase');
+firebase.initializeApp({
+    apiKey: "AIzaSyDmyXWDYwjFWV1qhSyYLGb8WAOK2sfBXOM",
+    authDomain: "hello-world-daace.firebaseapp.com",
+    databaseURL: "https://hello-world-daace.firebaseio.com",
+    projectId: "hello-world-daace",
+    storageBucket: "hello-world-daace.appspot.com",
+    messagingSenderId: "856084280399"
+});
+
+var fbDB = firebase.database(),
+    fbDBref = fbDB.ref();
 
 app.use(router);
 app.use(bodyParser.json());
@@ -14,23 +30,38 @@ app.use(express.static(__dirname + '/client'));
 
 router.get('/', function (req, res) {
     UUID = uuidv1();
+    isAskingName = true;
     res.sendFile(__dirname + '/client/index.html');
 });
 
 app.post('/sendRequest', function (req, res) {
     var response = res,
         request = apiAI.textRequest(req.body.message, {
-        sessionId: UUID
-    });
+            sessionId: UUID
+        });
 
-    request.on('response', function(res) {
+    request.on('response', function (res) {
         console.log("\x1b[32m", 'RESPONSE');
-        // console.log("\x1b[37m", JSON.stringify(res.result.fulfillment.messages[0].speech));
+        if (isAskingName) {
+            givenName = res.result.parameters["given-name"];
+            isAskingName = false;
+        }
+
+        if (typeof res.result.parameters.email !== 'undefined') {
+            // res.result.parameters.email[0]
+            var newPostRef = fbDBref;
+            newPostRef.push({
+                "name": givenName,
+                "email": res.result.parameters.email[0]
+            }).then(function () {
+                console.log("\x1b[32m", 'Upload successful! ^_^');
+            });
+        }
 
         response.json({ message: res.result.fulfillment.messages[0].speech });
     });
 
-    request.on('error', function(err) {
+    request.on('error', function (err) {
         console.log("\x1b[31m", 'ERROR');
         // console.log("\x1b[37m", JSON.stringify(err));
     });

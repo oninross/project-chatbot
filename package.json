@@ -1,12 +1,13 @@
 {
   "name": "project-chatbot",
   "description": "",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "dependencies": {
     "apiai": "^4.0.3",
     "body-parser": "^1.18.2",
     "express": "4.15.4",
+    "firebase": "^4.5.0",
     "uuid": "^3.1.0"
   },
   "engines": {
