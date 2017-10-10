@@ -133,14 +133,15 @@ export default class Conversation {
     enterChatBubble() {
         var that = this;
 
-        $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
-
         TweenLite.to($('.conversation__msg'), 0.2, {
             opacity: 1,
             scale: 1,
             ease: Back.easeOut,
             onStart: function () {
                 that.audio.play();
+            },
+            onComplete: function () {
+                $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
             }
         });
     }

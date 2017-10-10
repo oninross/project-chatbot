@@ -1,10 +1,11 @@
 // chat styles
 .chat {
-    bottom: 10px;
+    background-color: $material-background;
+    bottom: 0;
     left: 0;
     margin: auto;
     max-width: 768px;
-    padding: 0 $gutter;
+    padding: 0 $gutter 10px;
     position: fixed;
     right: 0;
     width: 100%;
