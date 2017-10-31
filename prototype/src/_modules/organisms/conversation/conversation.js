@@ -14,8 +14,8 @@ export default class Conversation {
         that.humanTmp = doT.template($('#msg__human-template').html());
         that.$jsSendQuery = $('.js-send-query');
         that.$convoWrap = $('.conversation__wrap');
-        // that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more about him or contact him?';
-        that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Before we begin, can you introduce yourself to me please?';
+        that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more about him or contact him?';
+        // that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Before we begin, can you introduce yourself to me please?';
         that.obj = {};
 
         $convo.mCustomScrollbar({
@@ -24,8 +24,8 @@ export default class Conversation {
             scrollbarPosition: 'outside'
         });
 
-        // that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant.<br/><br/>Would you like to get to know more <a class="js-click-msg" href="#">about him</a> or <a class="js-click-msg" href="#">contact</a> him?';
-        that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant.<br/><br/>Before we begin, can you introduce yourself to me please? 😄';
+        that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant.<br/><br/>Would you like to get to know more <a class="js-click-msg" href="#">about him</a> or <a class="js-click-msg" href="#">contact</a> him?';
+        // that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant.<br/><br/>Before we begin, can you introduce yourself to me please? 😄';
         that.$convoWrap.append(that.botTmp(that.obj));
 
         that.enterChatBubble();
