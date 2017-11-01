@@ -30,7 +30,7 @@ export default class Conversation {
 
         that.enterChatBubble();
 
-        that.speak('en-US', 'Google US English', that.msgStr);
+        that.speak('en-US', 'native', that.msgStr);
 
         $chatBox.on('keypress', function (e) {
             if (e.keyCode == 13) {
@@ -121,7 +121,7 @@ export default class Conversation {
 
                 that.msgStr = that.$convoWrap.find('.conversation__row:last-child .conversation__msg').text();
 
-                that.speak('en-US', 'Google US English', that.msgStr);
+                that.speak('en-US', 'native', that.msgStr);
             },
             error: function (error) {
                 console.log(error);
