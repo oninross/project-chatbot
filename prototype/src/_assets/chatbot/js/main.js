@@ -4,7 +4,6 @@
 'use strict';
 
 import $ from 'jquery';
-import 'lazyload';
 import 'TweenLite';
 import 'EasePack';
 import 'AttrPlugin';
