@@ -13,7 +13,7 @@ var express = require('express'),
     }),
     fs = require('fs'),
     params = {
-        voice: 'en-GB_KateVoice',
+        voice: 'en-US_MichaelVoice',
         accept: 'audio/wav'
     },
     UUID = '',
