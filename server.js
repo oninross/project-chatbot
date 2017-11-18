@@ -6,67 +6,106 @@ var express = require('express'),
     apiai = require('apiai'),
     apiAI = apiai('2fbd7449c74748c49a3c94c42427de39'),
     uuidv1 = require('uuid/v1'),
-    isAskingName = true;
+    TextToSpeechV1 = require('watson-developer-cloud/text-to-speech/v1'),
+    text_to_speech = new TextToSpeechV1({
+        username: 'a03cdd30-d6b9-44e3-9669-7be1002d367c',
+        password: 'M5GxwdtBvKpK'
+    }),
+    fs = require('fs'),
+    params = {
+        voice: 'en-US_MichaelVoice',
+        accept: 'audio/wav'
+    },
     UUID = '',
     givenName = '';
-
-// Initialise Firebase
-var firebase = require('firebase');
-firebase.initializeApp({
-    apiKey: "AIzaSyDmyXWDYwjFWV1qhSyYLGb8WAOK2sfBXOM",
-    authDomain: "hello-world-daace.firebaseapp.com",
-    databaseURL: "https://hello-world-daace.firebaseio.com",
-    projectId: "hello-world-daace",
-    storageBucket: "hello-world-daace.appspot.com",
-    messagingSenderId: "856084280399"
-});
-
-var fbDB = firebase.database(),
-    fbDBref = fbDB.ref();
 
 app.use(router);
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/client'));
+app.use(function (req, res, next) {
+    res.setHeader('Content-Type', 'audio/wav');
+    res.setHeader('Content-Length', '1000');
+    res.setHeader('Content-Range', 'bytes 0-999/123456');
+
+    next();
+});
 
 router.get('/', function (req, res) {
     UUID = uuidv1();
-    isAskingName = true;
+    console.log(UUID)
     res.sendFile(__dirname + '/client/index.html');
+
+    req.connection.addListener('close', function () {
+        fs.stat(__dirname + '/client/assets/chatbot/media/' + UUID + '.wav', function (err, stats) {
+            // console.log(stats);//here we got all information of file in stats variable
+
+            if (err) {
+                return console.error(err);
+            }
+
+            fs.unlink(__dirname + '/client/assets/chatbot/media/' + UUID + '.wav', function (err) {
+                if (err) return console.log(err);
+                console.log('file deleted successfully');
+            });
+        });
+    });
 });
 
 app.post('/sendRequest', function (req, res) {
     var response = res,
         request = apiAI.textRequest(req.body.message, {
             sessionId: UUID
-        });
+        }),
+        msg = '';
 
     request.on('response', function (res) {
         console.log("\x1b[32m", 'RESPONSE');
-        if (isAskingName) {
-            givenName = res.result.parameters["given-name"];
-            isAskingName = false;
-        }
 
-        if (typeof res.result.parameters.email !== 'undefined') {
-            // res.result.parameters.email[0]
-            var newPostRef = fbDBref;
-            newPostRef.push({
-                "name": givenName,
-                "email": res.result.parameters.email[0]
-            }).then(function () {
-                console.log("\x1b[32m", 'Upload successful! ^_^');
+        let wa = fs.createWriteStream(__dirname + '/client/assets/chatbot/media/' + UUID + '.wav');
+
+        msg = res.result.fulfillment.messages[0].speech;
+
+        params.text = msg;
+
+        // Pipe the synthesized text to a file.
+        text_to_speech.synthesize(params).on('error', function (error) {
+            console.log("\x1b[31m", 'ERROR: ' + error);
+        }).pipe(wa);
+
+        wa.on('finish', function () {
+            response.json({
+                UUID: UUID,
+                message: msg
             });
-        }
-
-        response.json({ message: res.result.fulfillment.messages[0].speech });
+        });
     });
 
     request.on('error', function (err) {
         console.log("\x1b[31m", 'ERROR');
-        // console.log("\x1b[37m", JSON.stringify(err));
+        console.log("\x1b[37m", JSON.stringify(err));
     });
 
     request.end();
+});
+
+app.post('/sendToSpeak', function (req, res) {
+    var response = res,
+        msg = req.body.message,
+        wa = fs.createWriteStream(__dirname + '/client/assets/chatbot/media/' + UUID + '.wav');
+
+    params.text = msg;
+
+    // Pipe the synthesized text to a file.
+    text_to_speech.synthesize(params).on('error', function (error) {
+        console.log("\x1b[31m", 'ERROR: ' + error);
+    }).pipe(wa);
+
+    wa.on('finish', function () {
+        response.json({
+            UUID: UUID,
+            message: msg
+        });
+    });
 });
 
 
