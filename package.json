@@ -1,7 +1,7 @@
 {
   "name": "project-chatbot",
   "description": "",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "private": true,
   "dependencies": {
     "apiai": "^4.0.3",
