@@ -14,9 +14,9 @@ export default class Conversation {
         that.humanTmp = doT.template($('#msg__human-template').html());
         that.$jsSendQuery = $('.js-send-query');
         that.$convoWrap = $('.conversation__wrap');
-        // that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more about him or contact him?';
-        that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Before we begin, can you introduce yourself to me please?';
+        that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Words in bold are actually links and keywords to help you communicate with me. Would you like to get to know more about him or contact him?';
         that.obj = {};
+        that.newBubbles = 0;
 
         $convo.mCustomScrollbar({
             setTop: 0,
@@ -24,8 +24,10 @@ export default class Conversation {
             scrollbarPosition: 'outside'
         });
 
-        // that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant.<br/><br/>Would you like to get to know more <a class="js-click-msg" href="#">about him</a> or <a class="js-click-msg" href="#">contact</a> him?';
-        that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant.<br/><br/>Before we begin, can you introduce yourself to me please? 😄';
+        that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant 🤖<br/><br/>Words in <strong><u>bold</u></strong> are actually <em>links</em> and <em>keywords</em> to help you communicate with me 😄<br/><br/>Would you like to get to know more <a class="js-click-msg" href="#">about</a> Niño or <a class="js-click-msg" href="#">contact</a> him?';
+
+        that.msgBubbleBurst(that.obj.message);
+
         that.$convoWrap.append(that.botTmp(that.obj));
 
         that.enterChatBubble();
@@ -101,6 +103,13 @@ export default class Conversation {
         }
     }
 
+    msgBubbleBurst(msgStr) {
+        const that = this;
+
+        that.obj.message = msgStr.split('<br/><br/>');
+        that.newBubbles = that.obj.message.length;
+    }
+
     sendQuery(msg) {
         const that = this;
 
@@ -133,17 +142,22 @@ export default class Conversation {
     enterChatBubble() {
         var that = this;
 
-        TweenLite.to($('.conversation__msg'), 0.2, {
-            opacity: 1,
-            scale: 1,
-            ease: Back.easeOut,
-            onStart: function () {
-                that.audio.play();
-            },
-            onComplete: function () {
-                $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
-            }
-        });
+        for (var i = 0, l = that.newBubbles; i < l; i++) {
+            TweenLite.to($('.conversation__row:last-child .conversation__bubble:nth-child(' + (i + 1) + ')'), 0.2, {
+                opacity: 1,
+                scale: 1,
+                ease: Back.easeOut,
+                delay: 0.2 * i,
+                onStart: function () {
+                    that.audio.play();
+                },
+                onComplete: function () {
+                    $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
+                }
+            });
+        }
+
+        that.newBubbles = 0;
     }
 
     speak(newLang, newVoice, string) {

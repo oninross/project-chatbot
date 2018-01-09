@@ -62,9 +62,13 @@ html.no-js(lang='en')
             script(id='msg__bot-template', type='text/template')
                 .conversation__row.-bot
                     .conversation__avatar
-                    .conversation__msg {{= it.message }}
+                    .conversation__msg
+                        |{{ for(var i in it.message) { }}
+                        .conversation__bubble {{= it.message[i] }}
+                        |{{ } }}
 
             script(id='msg__human-template', type='text/template')
                 .conversation__row.-human
-                    .conversation__msg {{= it.message }}
+                    .conversation__msg
+                        .conversation__bubble {{= it.message }}
 

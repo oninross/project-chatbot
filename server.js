@@ -14,6 +14,16 @@ app.use(router);
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/client'));
 
+app.use(function (req, res, next) {
+    if (req.secure) {
+        // request was via https, so do no special handling
+        next();
+    } else {
+        // request was via http, so redirect to https
+        res.redirect('https://' + req.headers.host + req.url);
+    }
+});
+
 router.get('/', function (req, res) {
     UUID = uuidv1();
     res.sendFile(__dirname + '/client/index.html');

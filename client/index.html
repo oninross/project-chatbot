@@ -63,12 +63,16 @@
     <script id="msg__bot-template" type="text/template">
       <div class="conversation__row -bot">
         <div class="conversation__avatar"></div>
-        <div class="conversation__msg">{{= it.message }}</div>
+        <div class="conversation__msg">{{ for(var i in it.message) { }}
+          <div class="conversation__bubble">{{= it.message[i] }}</div>{{ } }}
+        </div>
       </div>
     </script>
     <script id="msg__human-template" type="text/template">
       <div class="conversation__row -human">
-        <div class="conversation__msg">{{= it.message }}</div>
+        <div class="conversation__msg">
+          <div class="conversation__bubble">{{= it.message }}</div>
+        </div>
       </div>
     </script>
   </body>
