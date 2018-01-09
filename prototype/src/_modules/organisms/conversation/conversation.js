@@ -14,9 +14,9 @@ export default class Conversation {
         that.humanTmp = doT.template($('#msg__human-template').html());
         that.$jsSendQuery = $('.js-send-query');
         that.$convoWrap = $('.conversation__wrap');
-        // that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Would you like to get to know more about him or contact him?';
-        that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Before we begin, can you introduce yourself to me please?';
+        that.msgStr = 'Hello! My name is Nathan and I\'m Niño\'s digital portfolio assistant. Words in bold are actually links and keywords to help you communicate with me. Would you like to get to know more about him or contact him?';
         that.obj = {};
+        that.newBubbles = 0;
 
         $convo.mCustomScrollbar({
             setTop: 0,
@@ -24,10 +24,11 @@ export default class Conversation {
             scrollbarPosition: 'outside'
         });
 
-        // that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant.<br/><br/>Would you like to get to know more <a class="js-click-msg" href="#">about him</a> or <a class="js-click-msg" href="#">contact</a> him?';
-        that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant.<br/><br/>Before we begin, can you introduce yourself to me please? 😄';
-        that.$convoWrap.append(that.botTmp(that.obj));
+        that.obj.message = 'Hello! My name is Nathan and I\'m Niño\'s digital <a class="js-click-msg" href="#">portfolio</a> assistant 🤖<br/><br/>Words in <strong><u>bold</u></strong> are actually <em>links</em> and <em>keywords</em> to help you communicate with me 😄<br/><br/>Would you like to get to know more <a class="js-click-msg" href="#">about</a> Niño or <a class="js-click-msg" href="#">contact</a> him?';
 
+        that.msgBubbleBurst(that.obj.message);
+
+        that.$convoWrap.append(that.botTmp(that.obj));
         that.enterChatBubble();
 
         that.speak('en-US', 'native', that.msgStr);
@@ -46,8 +47,10 @@ export default class Conversation {
             }
 
             that.obj.message = $chatBox.val();
-            that.$convoWrap.append(that.humanTmp(that.obj));
 
+            that.msgBubbleBurst(that.obj.message);
+
+            that.$convoWrap.append(that.humanTmp(that.obj));
             that.enterChatBubble();
 
             $chatBox.val('');
@@ -60,6 +63,8 @@ export default class Conversation {
             e.preventDefault();
 
             $chatBox.val($(this).text());
+            that.msgBubbleBurst(that.obj.message);
+
             that.$jsSendQuery.trigger('click');
         });
 
@@ -80,9 +85,12 @@ export default class Conversation {
                 that.obj.message = e.results["0"]["0"].transcript;
 
                 that.sendQuery(that.obj.message);
-                that.$convoWrap.append(that.humanTmp(that.obj));
 
-                that.enterChatBubble();
+                setTimeout(function () {
+                    that.$convoWrap.append(that.humanTmp(that.obj));
+                    that.enterChatBubble();
+                }, 500);
+
                 $jsTalk.removeClass('-active');
             }
 
@@ -90,15 +98,35 @@ export default class Conversation {
                 $jsTalk.removeClass('-active');
 
                 that.obj.message = 'Sorry, I could\'t understand that. Can you say it a little bit slower please?';
-                that.$convoWrap.append(that.botTmp(that.obj));
 
-                that.enterChatBubble();
+                setTimeout(function () {
+                    that.$convoWrap.append(that.botTmp(that.obj));
+                    that.enterChatBubble();
+                }, 500);
+
             }
 
             recognition.onend = function () {
                 $jsTalk.removeClass('-active');
             }
         }
+
+        if (location.protocol === 'http:') {
+            $('.chat__btn.-mic').prop('disabled', true);
+        }
+    }
+
+    msgBubbleBurst(msgStr) {
+        const that = this;
+
+        if (that.obj.message.indexOf('<br/><br/>') > -1) {
+            that.obj.message = msgStr.split('<br/><br/>');
+        } else {
+            that.obj.message = [];
+            that.obj.message.push(msgStr);
+        }
+
+        that.newBubbles = that.obj.message.length;
     }
 
     sendQuery(msg) {
@@ -115,9 +143,16 @@ export default class Conversation {
                 that.$jsSendQuery.attr('disabled', false);
 
                 that.obj.message = data.message;
+
+                that.msgBubbleBurst(that.obj.message);
+
                 that.$convoWrap.append(that.botTmp(that.obj));
 
-                that.enterChatBubble();
+                $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
+
+                setTimeout(function () {
+                    that.enterChatBubble();
+                }, 1000);
 
                 that.msgStr = that.$convoWrap.find('.conversation__row:last-child .conversation__msg').text();
 
@@ -133,17 +168,21 @@ export default class Conversation {
     enterChatBubble() {
         var that = this;
 
-        TweenLite.to($('.conversation__msg'), 0.2, {
-            opacity: 1,
-            scale: 1,
-            ease: Back.easeOut,
-            onStart: function () {
-                that.audio.play();
-            },
-            onComplete: function () {
-                $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
-            }
-        });
+        for (var i = 0, l = that.newBubbles; i < l; i++) {
+            TweenLite.to($('.conversation__row:last-child .conversation__bubble:nth-child(' + (i + 1) + ')'), 0.2, {
+                opacity: 1,
+                scale: 1,
+                ease: Back.easeOut,
+                delay: 0.2 * i,
+                onStart: function () {
+                    that.audio.play();
+                }
+            });
+        }
+
+        that.newBubbles = 0;
+
+        $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
     }
 
     speak(newLang, newVoice, string) {

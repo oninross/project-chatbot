@@ -10,38 +10,71 @@
 
     &__row {
         @include clearfix;
-
-        // &.-bot {
-        //     transform-origin: left top;
-        // }
-
-        // &.-human {
-        //     transform-origin: right top;
-        // }
     }
 
     &__avatar {
-        background: url(../images/favicon/favicon-96x96.png) no-repeat center;
-        background-size: cover;
         border-radius: 4px;
         box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-        float: left;
         height: 30px;
         width: 30px;
+
+        .-bot & {
+            background: url(../images/bot-avatar.jpg) no-repeat;
+            background-size: cover;
+            float: left;
+        }
+
+        .-human & {
+            background: url(../images/human-avatar.jpg) no-repeat;
+            background-size: cover;
+            float: right;
+        }
     }
 
     &__msg {
+        .-bot & {
+            float: left;
+            margin-left: 15px;
+            max-width: 215px;
+
+            @media screen and (min-width: 321px) {
+                max-width: 280px;
+            }
+        }
+
+        .-human & {
+            float: right;
+            margin-right: 15px;
+        }
+    }
+
+    &__bubble {
         box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-        color: $white;
         border-radius: 4px;
         font-size: 1.6em;
         font-weight: $light;
         line-height: 1.25;
         max-width: 320px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         opacity: 0;
         padding: 15px;
         transform: scale(0.25);
+
+        &:last-child {
+            margin-bottom: 20px;
+        }
+
+        .-bot & {
+            background-color: $white;
+            color: $black;
+            transform-origin: left top;
+        }
+
+        .-human & {
+            background-color: $matte-black;
+            color: $white;
+            transform-origin: right top;
+        }
 
         a {
             font-weight: $bold;
@@ -50,25 +83,6 @@
 
         img {
             margin-bottom: 0;
-        }
-
-        .-bot & {
-            float: left;
-            background-color: $white;
-            color: $black;
-            margin-left: 15px;
-            max-width: 215px;
-            transform-origin: left top;
-
-            @media screen and (min-width: 321px) {
-                max-width: 280px;
-            }
-        }
-
-        .-human & {
-            background-color: $matte-black;
-            float: right;
-            transform-origin: right top;
         }
     }
 
