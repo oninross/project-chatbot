@@ -4,7 +4,7 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     router = express.Router(),
     apiai = require('apiai'),
-    apiAI = apiai('2fbd7449c74748c49a3c94c42427de39'),
+    apiAI = apiai('598c8763eb1048e9bf4ff7e356f05275'),
     uuidv1 = require('uuid/v1');
 
 let UUID = '',
@@ -43,7 +43,7 @@ app.post('/sendRequest', function (req, res) {
 
     request.on('error', function (err) {
         console.log("\x1b[31m", 'ERROR');
-        // console.log("\x1b[37m", JSON.stringify(err));
+        console.log("\x1b[37m", JSON.stringify(err));
     });
 
     request.end();
