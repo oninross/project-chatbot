@@ -29,7 +29,6 @@ export default class Conversation {
         that.msgBubbleBurst(that.obj.message);
 
         that.$convoWrap.append(that.botTmp(that.obj));
-
         that.enterChatBubble();
 
         that.speak('en-US', 'native', that.msgStr);
@@ -48,8 +47,10 @@ export default class Conversation {
             }
 
             that.obj.message = $chatBox.val();
-            that.$convoWrap.append(that.humanTmp(that.obj));
 
+            that.msgBubbleBurst(that.obj.message);
+
+            that.$convoWrap.append(that.humanTmp(that.obj));
             that.enterChatBubble();
 
             $chatBox.val('');
@@ -62,6 +63,8 @@ export default class Conversation {
             e.preventDefault();
 
             $chatBox.val($(this).text());
+            that.msgBubbleBurst(that.obj.message);
+
             that.$jsSendQuery.trigger('click');
         });
 
@@ -82,9 +85,12 @@ export default class Conversation {
                 that.obj.message = e.results["0"]["0"].transcript;
 
                 that.sendQuery(that.obj.message);
-                that.$convoWrap.append(that.humanTmp(that.obj));
 
-                that.enterChatBubble();
+                setTimeout(function () {
+                    that.$convoWrap.append(that.humanTmp(that.obj));
+                    that.enterChatBubble();
+                }, 500);
+
                 $jsTalk.removeClass('-active');
             }
 
@@ -92,21 +98,34 @@ export default class Conversation {
                 $jsTalk.removeClass('-active');
 
                 that.obj.message = 'Sorry, I could\'t understand that. Can you say it a little bit slower please?';
-                that.$convoWrap.append(that.botTmp(that.obj));
 
-                that.enterChatBubble();
+                setTimeout(function () {
+                    that.$convoWrap.append(that.botTmp(that.obj));
+                    that.enterChatBubble();
+                }, 500);
+
             }
 
             recognition.onend = function () {
                 $jsTalk.removeClass('-active');
             }
         }
+
+        if (location.protocol === 'http:') {
+            $('.chat__btn.-mic').prop('disabled', true);
+        }
     }
 
     msgBubbleBurst(msgStr) {
         const that = this;
 
-        that.obj.message = msgStr.split('<br/><br/>');
+        if (that.obj.message.indexOf('<br/><br/>') > -1) {
+            that.obj.message = msgStr.split('<br/><br/>');
+        } else {
+            that.obj.message = [];
+            that.obj.message.push(msgStr);
+        }
+
         that.newBubbles = that.obj.message.length;
     }
 
@@ -124,9 +143,16 @@ export default class Conversation {
                 that.$jsSendQuery.attr('disabled', false);
 
                 that.obj.message = data.message;
+
+                that.msgBubbleBurst(that.obj.message);
+
                 that.$convoWrap.append(that.botTmp(that.obj));
 
-                that.enterChatBubble();
+                $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
+
+                setTimeout(function () {
+                    that.enterChatBubble();
+                }, 1000);
 
                 that.msgStr = that.$convoWrap.find('.conversation__row:last-child .conversation__msg').text();
 
@@ -150,14 +176,13 @@ export default class Conversation {
                 delay: 0.2 * i,
                 onStart: function () {
                     that.audio.play();
-                },
-                onComplete: function () {
-                    $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
                 }
             });
         }
 
         that.newBubbles = 0;
+
+        $('.conversation').mCustomScrollbar('scrollTo', 'bottom');
     }
 
     speak(newLang, newVoice, string) {

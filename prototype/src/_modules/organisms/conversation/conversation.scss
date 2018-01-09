@@ -13,13 +13,22 @@
     }
 
     &__avatar {
-        background: url(../images/favicon/favicon-96x96.png) no-repeat center;
-        background-size: cover;
         border-radius: 4px;
         box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-        float: left;
         height: 30px;
         width: 30px;
+
+        .-bot & {
+            background: url(../images/bot-avatar.jpg) no-repeat;
+            background-size: cover;
+            float: left;
+        }
+
+        .-human & {
+            background: url(../images/human-avatar.jpg) no-repeat;
+            background-size: cover;
+            float: right;
+        }
     }
 
     &__msg {
@@ -35,6 +44,7 @@
 
         .-human & {
             float: right;
+            margin-right: 15px;
         }
     }
 
