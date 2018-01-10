@@ -86,8 +86,11 @@ export default class Conversation {
 
                 that.sendQuery(that.obj.message);
 
+                that.msgBubbleBurst(that.obj.message);
+
+                that.$convoWrap.append(that.humanTmp(that.obj));
+
                 setTimeout(function () {
-                    that.$convoWrap.append(that.humanTmp(that.obj));
                     that.enterChatBubble();
                 }, 500);
 
