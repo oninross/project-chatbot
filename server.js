@@ -4,7 +4,7 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     router = express.Router(),
     apiai = require('apiai'),
-    apiAI = apiai('598c8763eb1048e9bf4ff7e356f05275'),
+    apiAI = apiai('d13f49717d194c6dbb58b363fc62f5b4'),
     uuidv1 = require('uuid/v1');
 
 let UUID = '',
